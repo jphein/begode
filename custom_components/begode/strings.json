@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a Begode EUC",
+        "data": {
+          "address": "Wheel",
+          "name": "Name",
+          "voltage": "Pack voltage"
+        }
+      },
+      "confirm": {
+        "title": "Begode EUC found ({address})",
+        "data": {
+          "name": "Name",
+          "voltage": "Pack voltage"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This wheel is already configured",
+      "no_devices_found": "No connectable Begode wheels found. Power the wheel on near a Bluetooth proxy and try again."
+    }
+  }
+}

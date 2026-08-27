@@ -1,0 +1,19 @@
+{
+  "domain": "begode",
+  "name": "Begode EUC",
+  "bluetooth": [
+    { "local_name": "GotWay*", "connectable": true },
+    { "local_name": "Gotway*", "connectable": true },
+    { "local_name": "GOTWAY*", "connectable": true },
+    { "local_name": "Begode*", "connectable": true },
+    { "local_name": "BEGODE*", "connectable": true }
+  ],
+  "codeowners": ["@jphein"],
+  "config_flow": true,
+  "dependencies": ["bluetooth_adapters"],
+  "documentation": "https://github.com/jphein/begode",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "requirements": [],
+  "version": "0.1.0"
+}
