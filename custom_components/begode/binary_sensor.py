@@ -14,7 +14,9 @@ from .coordinator import BegodeConfigEntry, BegodeCoordinator
 from .entity import BegodeEntity
 
 # Regen while riding also shows negative battery current; require standstill.
-CHARGING_CURRENT_THRESHOLD = -0.3
+# -0.1 A: idle wheels report ~0.00..-0.02 A, charging reads -0.1..-0.5 A
+# (the Mten Mini trickles as low as -0.12 A, which a -0.3 cutoff missed).
+CHARGING_CURRENT_THRESHOLD = -0.1
 
 
 async def async_setup_entry(
