@@ -17,6 +17,9 @@ from .entity import BegodeEntity
 # -0.1 A: idle wheels report ~0.00..-0.02 A, charging reads -0.1..-0.5 A
 # (the Mten Mini trickles as low as -0.12 A, which a -0.3 cutoff missed).
 CHARGING_CURRENT_THRESHOLD = -0.1
+# ...and some wheels (Mten Mini) fluctuate around zero even while charging,
+# so a battery-%-rise at standstill within this window also counts.
+RISE_WINDOW_SECONDS = 900
 
 
 async def async_setup_entry(
@@ -62,10 +65,17 @@ class BegodeChargingSensor(BegodeEntity, BinarySensorEntity):
 
     @property
     def is_on(self) -> bool | None:
-        state = self.coordinator.state
-        if not self.coordinator.connected or state.battery_current is None:
+        coord = self.coordinator
+        state = coord.state
+        if not coord.connected:
             return False
-        return (
-            state.battery_current < CHARGING_CURRENT_THRESHOLD
+        current_draw = (
+            state.battery_current is not None
+            and state.battery_current < CHARGING_CURRENT_THRESHOLD
             and (state.speed or 0.0) < 1.0
         )
+        recent_rise = (
+            coord.last_charge_rise > 0
+            and coord.hass.loop.time() - coord.last_charge_rise < RISE_WINDOW_SECONDS
+        )
+        return current_draw or recent_rise

@@ -70,6 +70,11 @@ class BegodeCoordinator(DataUpdateCoordinator[WheelState]):
         self._identify_task: asyncio.Task | None = None
         self._stopped = False
         self._unsub_bluetooth: Callable[[], None] | None = None
+        # Battery-rise tracking: charging detection can't rely on the current
+        # sign alone (the Mten Mini's reported current fluctuates around zero
+        # while charging).
+        self.last_charge_rise: float = 0.0
+        self._last_battery: int | None = None
         self.async_set_updated_data(self.decoder.state)
 
     @property
@@ -190,6 +195,16 @@ class BegodeCoordinator(DataUpdateCoordinator[WheelState]):
 
     def _push(self, force: bool = False) -> None:
         now = self.hass.loop.time()
+        st = self.decoder.state
+        if (
+            st.battery is not None
+            and self._last_battery is not None
+            and st.battery > self._last_battery
+            and (st.speed or 0.0) < 1.0
+        ):
+            self.last_charge_rise = now
+        if st.battery is not None:
+            self._last_battery = st.battery
         if not force and now - self._last_push < PUSH_INTERVAL:
             if self._flush_handle is None:
                 self._flush_handle = self.hass.loop.call_later(
