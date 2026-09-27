@@ -71,11 +71,9 @@ tar cz -C custom_components begode | ssh <user>@<ha-host> "sudo tar xz -C /confi
 
 ## License
 
-**GPL-3.0** (see LICENSE). `protocol.py` is a port of WheelLog's
-`GotwayAdapter` ([Wheellog/Wheellog.Android](https://github.com/Wheellog/Wheellog.Android),
-GPL-3.0) — this project inherits that license as a derivative work.
-Credit and thanks to the WheelLog contributors for the protocol
-reverse-engineering.
+AGPL-3.0-or-later © 2026 Jeffrey Pine Hein. See [LICENSE](LICENSE).
+
+`custom_components/begode/protocol.py` is a port of WheelLog's `GotwayAdapter` ([Wheellog/Wheellog.Android](https://github.com/Wheellog/Wheellog.Android), GPL-3.0) and keeps its GPL-3.0-or-later notice; GPL-3.0 §13 permits combining it with this AGPL-licensed project. Credit and thanks to the WheelLog contributors for the protocol reverse-engineering.
 
 ## Tests
 
